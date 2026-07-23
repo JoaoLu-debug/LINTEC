@@ -23,12 +23,22 @@
         <span class="logo-dot"></span>
       </a>
       <div class="morphic-island-wrapper">
-        <div class="morphic-island">
-          <a href="#inicio" class="morphic-link active" data-path="#inicio">Início</a>
-          <a href="#expectativas" class="morphic-link" data-path="#expectativas">Diferenciais</a>
-          <a href="#segmentos" class="morphic-link" data-path="#segmentos">Segmentos</a>
-          <a href="#marcas" class="morphic-link" data-path="#marcas">Marcas</a>
-          <a href="#contato" class="morphic-link" data-path="#contato">Contato</a>
+        <div class="morphic-island-container">
+          <div class="morphic-gooey-bg">
+            <div class="static-blob"></div>
+            <div class="static-blob"></div>
+            <div class="static-blob"></div>
+            <div class="static-blob"></div>
+            <div class="static-blob"></div>
+            <div class="morphic-indicator"></div>
+          </div>
+          <div class="morphic-links-layer">
+            <a href="#inicio" class="morphic-link active" data-path="#inicio">Início</a>
+            <a href="#expectativas" class="morphic-link" data-path="#expectativas">Diferenciais</a>
+            <a href="#segmentos" class="morphic-link" data-path="#segmentos">Segmentos</a>
+            <a href="#marcas" class="morphic-link" data-path="#marcas">Marcas</a>
+            <a href="#contato" class="morphic-link" data-path="#contato">Contato</a>
+          </div>
         </div>
       </div>
       <div class="navbar-actions" style="display: flex; gap: 12px;">
@@ -324,6 +334,12 @@
         <feDisplacementMap in="SourceGraphic" in2="blurredNoise" result="displaced" scale="35" xChannelSelector="R" yChannelSelector="B" />
         <feGaussianBlur in="displaced" result="finalBlur" stdDeviation="2" />
         <feComposite in="finalBlur" in2="finalBlur" operator="over" />
+      </filter>
+      <!-- Filtro Gooey Líquido para o Navbar -->
+      <filter id="gooey-navbar-filter">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
+        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo" />
+        <feComposite in="SourceGraphic" in2="goo" operator="atop" />
       </filter>
     </defs>
   </svg>

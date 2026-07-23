@@ -26,42 +26,45 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   /* ==========================================================================
-     1.5. MORPHIC NAVBAR LOGIC & SCROLL SPY
+     1.5. MORPHIC NAVBAR LOGIC (GOOEY LIQUID GLASS INDICATOR) & SCROLL SPY
      ========================================================================== */
   const morphicLinks = document.querySelectorAll('.morphic-link');
   const sections = document.querySelectorAll('section[id]');
+  const indicator = document.querySelector('.morphic-indicator');
+  const linksLayer = document.querySelector('.morphic-links-layer');
+
+  function updateIndicator(activeLink) {
+    if (!indicator || !activeLink || !linksLayer) return;
+    
+    const containerRect = linksLayer.getBoundingClientRect();
+    const linkRect = activeLink.getBoundingClientRect();
+    
+    const left = linkRect.left - containerRect.left;
+    const width = linkRect.width;
+    
+    indicator.style.left = `${left}px`;
+    indicator.style.width = `${width}px`;
+  }
 
   function updateMorphicNavbar(activeHref) {
-    morphicLinks.forEach((link, index) => {
+    let activeLink = null;
+    
+    morphicLinks.forEach((link) => {
       const isLinkActive = link.getAttribute('href') === activeHref;
       
-      // Remove all shapes
-      link.classList.remove('active', 'round-all', 'round-left', 'round-right');
-      
       if (isLinkActive) {
-        link.classList.add('active', 'round-all');
+        link.classList.add('active');
+        activeLink = link;
       } else {
-        const prevLink = index > 0 ? morphicLinks[index - 1] : null;
-        const nextLink = index < morphicLinks.length - 1 ? morphicLinks[index + 1] : null;
-        
-        const isPrevActive = prevLink && prevLink.getAttribute('href') === activeHref;
-        const isNextActive = nextLink && nextLink.getAttribute('href') === activeHref;
-        
-        const isFirst = index === 0;
-        const isLast = index === morphicLinks.length - 1;
-        
-        const shouldRoundLeft = isFirst || isPrevActive;
-        const shouldRoundRight = isLast || isNextActive;
-        
-        if (shouldRoundLeft && shouldRoundRight) {
-          link.classList.add('round-all');
-        } else if (shouldRoundLeft) {
-          link.classList.add('round-left');
-        } else if (shouldRoundRight) {
-          link.classList.add('round-right');
-        }
+        link.classList.remove('active');
       }
     });
+
+    if (activeLink) {
+      requestAnimationFrame(() => {
+        updateIndicator(activeLink);
+      });
+    }
   }
 
   // Click handler to update active state immediately
@@ -74,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Scroll spy to update active state based on position
   function scrollSpy() {
-    const scrollPosition = window.scrollY + 120; // offset for the navbar
+    const scrollPosition = window.scrollY + 150; // offset for the navbar
     
     let currentSectionId = '#inicio';
     sections.forEach(section => {
@@ -90,9 +93,20 @@ document.addEventListener('DOMContentLoaded', () => {
     updateMorphicNavbar(currentSectionId);
   }
 
+  // Handle window resizing to keep indicator aligned
+  window.addEventListener('resize', () => {
+    const activeLink = document.querySelector('.morphic-link.active');
+    if (activeLink) {
+      updateIndicator(activeLink);
+    }
+  });
+
   window.addEventListener('scroll', scrollSpy);
+  
   // Initial call to set active link on load
-  scrollSpy();
+  setTimeout(() => {
+    scrollSpy();
+  }, 100);
 
 
   /* ==========================================================================
