@@ -123,22 +123,16 @@ body {
   border-color: rgba(0, 0, 0, 0.04);
 }
 
-.navbar.scrolled .static-blob {
-  background: rgba(0, 0, 0, 0.02);
-}
-
 .navbar.scrolled .morphic-link {
   color: rgba(0, 31, 102, 0.6);
-  text-shadow: none;
 }
 
 .navbar.scrolled .morphic-link:hover {
-  color: var(--blue-dark);
+  color: var(--text-white) !important;
 }
 
 .navbar.scrolled .morphic-link.active {
   color: var(--text-white) !important;
-  text-shadow: none;
 }
 
 .navbar.scrolled .btn-outline-white {
@@ -169,41 +163,10 @@ body {
   align-items: center;
   background: rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 16px;
+  border-radius: 18px;
   padding: 4px;
   overflow: visible;
-  height: 38px;
-}
-
-.morphic-gooey-bg {
-  position: absolute;
-  inset: 4px;
-  display: flex;
-  pointer-events: none;
-  z-index: 0;
-  filter: url('#gooey-navbar-filter');
-}
-
-.static-blob {
-  flex: 1;
-  height: 100%;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.03);
-  margin: 0 2px;
-}
-
-.morphic-indicator {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  background-color: var(--blue-bright);
-  border-radius: 12px;
-  z-index: 1;
-  transition: left 0.45s cubic-bezier(0.25, 0.8, 0.15, 1.15), width 0.45s cubic-bezier(0.25, 0.8, 0.15, 1.15);
-  will-change: left, width;
-  box-shadow: 0 4px 12px rgba(0, 82, 255, 0.3);
+  height: 40px;
 }
 
 .morphic-links-layer {
@@ -213,14 +176,16 @@ body {
   z-index: 2;
   width: 100%;
   height: 100%;
+  gap: 4px;
 }
 
 .morphic-link {
+  position: relative;
   flex: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0 16px;
+  padding: 0 18px;
   height: 100%;
   font-family: var(--font-body);
   font-size: 0.82rem;
@@ -228,20 +193,84 @@ body {
   color: rgba(255, 255, 255, 0.65);
   text-decoration: none;
   background-color: transparent;
-  transition: color 0.3s var(--ease-ramp), text-shadow 0.3s var(--ease-ramp);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: color 0.4s var(--ease-ramp), background-color 0.4s var(--ease-ramp);
   text-align: center;
   white-space: nowrap;
+  cursor: pointer;
+}
+
+/* Rising Circle Background Hover Anim (PillNav style) */
+.pill-hover-circle {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 10px;
+  height: 10px;
+  background-color: var(--blue-bright);
+  border-radius: 50%;
+  transform: translate(-50%, 50%) scale(0);
+  transform-origin: center bottom;
+  transition: transform 0.6s var(--ease-ramp);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.morphic-link:hover .pill-hover-circle,
+.morphic-link.active .pill-hover-circle {
+  transform: translate(-50%, 50%) scale(12);
+}
+
+/* Slide Label Stack */
+.pill-label-stack {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 18px;
+  overflow: hidden;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.pill-label {
+  display: inline-block;
+  transform: translateY(0);
+  transition: transform 0.5s var(--ease-ramp);
+  will-change: transform;
+}
+
+.pill-label-hover {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  width: 100%;
+  text-align: center;
+  color: var(--text-white);
+  transform: translateY(0);
+  transition: transform 0.5s var(--ease-ramp);
+  will-change: transform;
+}
+
+.morphic-link:hover .pill-label,
+.morphic-link.active .pill-label {
+  transform: translateY(-100%);
+}
+
+.morphic-link:hover .pill-label-hover,
+.morphic-link.active .pill-label-hover {
+  transform: translateY(-100%);
 }
 
 .morphic-link:hover {
-  color: var(--text-white);
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  color: var(--text-white) !important;
 }
 
 .morphic-link.active {
   color: var(--text-white) !important;
   font-weight: 600;
-  text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }
 
 @media (max-width: 1024px) {
@@ -265,6 +294,11 @@ body {
   align-items: center;
   text-decoration: none;
   font-family: var(--font-title);
+  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.logo-area:hover {
+  transform: rotate(360deg) scale(1.05);
 }
 
 .logo-text {

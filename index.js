@@ -26,45 +26,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   /* ==========================================================================
-     1.5. MORPHIC NAVBAR LOGIC (GOOEY LIQUID GLASS INDICATOR) & SCROLL SPY
+     1.5. PILL NAV LOGIC & SCROLL SPY
      ========================================================================== */
   const morphicLinks = document.querySelectorAll('.morphic-link');
   const sections = document.querySelectorAll('section[id]');
-  const indicator = document.querySelector('.morphic-indicator');
-  const linksLayer = document.querySelector('.morphic-links-layer');
-
-  function updateIndicator(activeLink) {
-    if (!indicator || !activeLink || !linksLayer) return;
-    
-    const containerRect = linksLayer.getBoundingClientRect();
-    const linkRect = activeLink.getBoundingClientRect();
-    
-    const left = linkRect.left - containerRect.left;
-    const width = linkRect.width;
-    
-    indicator.style.left = `${left}px`;
-    indicator.style.width = `${width}px`;
-  }
 
   function updateMorphicNavbar(activeHref) {
-    let activeLink = null;
-    
     morphicLinks.forEach((link) => {
       const isLinkActive = link.getAttribute('href') === activeHref;
-      
       if (isLinkActive) {
         link.classList.add('active');
-        activeLink = link;
       } else {
         link.classList.remove('active');
       }
     });
-
-    if (activeLink) {
-      requestAnimationFrame(() => {
-        updateIndicator(activeLink);
-      });
-    }
   }
 
   // Click handler to update active state immediately
@@ -92,14 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     updateMorphicNavbar(currentSectionId);
   }
-
-  // Handle window resizing to keep indicator aligned
-  window.addEventListener('resize', () => {
-    const activeLink = document.querySelector('.morphic-link.active');
-    if (activeLink) {
-      updateIndicator(activeLink);
-    }
-  });
 
   const navbar = document.querySelector('.navbar');
   function handleNavbarScroll() {
