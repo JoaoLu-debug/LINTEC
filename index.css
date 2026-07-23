@@ -11,8 +11,8 @@
   --blue-dark: #001f66;        /* Azul escuro profundo */
   --blue-glow: #3b82f6;        /* Azul de brilho radial */
   
-  --bg-white: #ffffff;         /* Fundo principal das seções */
-  --bg-light: #f8f9fa;         /* Fundo alternativo */
+  --bg-white: #faf9f6;         /* Fundo principal das seções (Off-white) */
+  --bg-light: #f3f3f5;         /* Fundo alternativo */
   --bg-tag: #f1f3f5;           /* Fundo das tags arredondadas */
   
   --text-dark: #090a0f;        /* Texto principal no fundo branco */
@@ -106,9 +106,53 @@ body {
 
 /* Scrolled State for High Contrast Over White Backgrounds */
 .navbar.scrolled {
-  background: rgba(15, 23, 42, 0.65) !important; /* Transparência cinza/escura */
-  border-color: rgba(255, 255, 255, 0.12);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.10);
+  background: rgba(250, 249, 246, 0.75) !important; /* Transparência off-white */
+  border-color: rgba(0, 19, 102, 0.08);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.navbar.scrolled .logo-text {
+  background: linear-gradient(135deg, #001f66 0%, #0052ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: none;
+}
+
+.navbar.scrolled .morphic-island-container {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.04);
+}
+
+.navbar.scrolled .static-blob {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.navbar.scrolled .morphic-link {
+  color: rgba(0, 31, 102, 0.6);
+  text-shadow: none;
+}
+
+.navbar.scrolled .morphic-link:hover {
+  color: var(--blue-dark);
+}
+
+.navbar.scrolled .morphic-link.active {
+  color: var(--text-white) !important;
+  text-shadow: none;
+}
+
+.navbar.scrolled .btn-outline-white {
+  border-color: rgba(0, 82, 255, 0.25);
+  color: var(--blue-bright);
+}
+
+.navbar.scrolled .btn-outline-white:hover {
+  border-color: var(--blue-bright);
+  background-color: rgba(0, 82, 255, 0.05);
+}
+
+.navbar.scrolled .mobile-toggle .bar {
+  background-color: var(--blue-dark);
 }
 
 /* Morphic Navbar Island */
