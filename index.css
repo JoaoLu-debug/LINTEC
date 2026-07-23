@@ -181,7 +181,7 @@ body {
 
 .morphic-link {
   position: relative;
-  flex: 1;
+  flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
   justify-content: center;
