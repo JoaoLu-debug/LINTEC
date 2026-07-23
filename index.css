@@ -157,6 +157,28 @@ body {
   box-shadow: 0 6px 16px rgba(212, 255, 0, 0.35);
 }
 
+.btn-outline-white {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background-color: transparent;
+  color: var(--text-white);
+  border-radius: 30px;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.btn-outline-white:hover {
+  border-color: var(--text-white);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
 .mobile-toggle {
   display: none;
   flex-direction: column;
@@ -208,7 +230,7 @@ body {
 .drawer-menu {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
   padding: 80px 40px;
 }
 
@@ -226,7 +248,29 @@ body {
 }
 
 .drawer-cta {
-  margin-top: 20px;
+  margin-top: 15px;
+}
+
+.btn-outline-white-drawer {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 30px;
+  color: var(--text-white);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.btn-outline-white-drawer:hover {
+  border-color: var(--text-white);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 /* ==========================================================================
@@ -330,6 +374,17 @@ body {
   color: rgba(255, 255, 255, 0.95);
   line-height: 1.4;
   letter-spacing: -0.2px;
+}
+
+.hero-actions {
+  margin-top: 32px;
+  z-index: 2;
+}
+
+.hero-cta {
+  padding: 12px 28px;
+  font-size: 0.95rem;
+  box-shadow: 0 6px 20px rgba(212, 255, 0, 0.3);
 }
 
 /* Títulos metálicos com gradiente cromático prateado */
