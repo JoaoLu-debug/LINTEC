@@ -101,11 +101,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  window.addEventListener('scroll', scrollSpy);
+  const navbar = document.querySelector('.navbar');
+  function handleNavbarScroll() {
+    if (!navbar) return;
+    if (window.scrollY > 30) {
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
+    }
+  }
+
+  window.addEventListener('scroll', () => {
+    scrollSpy();
+    handleNavbarScroll();
+  });
   
-  // Initial call to set active link on load
+  // Initial call to set active link and navbar state on load
   setTimeout(() => {
     scrollSpy();
+    handleNavbarScroll();
   }, 100);
 
 

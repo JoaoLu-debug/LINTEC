@@ -85,11 +85,11 @@ body {
   max-width: 1200px;
   height: 64px;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.02) !important;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.01) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  transition: all var(--transition-fast);
+  box-shadow: none;
+  transition: background-color 0.4s var(--ease-ramp), border-color 0.4s var(--ease-ramp), box-shadow 0.4s var(--ease-ramp);
   overflow: visible;
 }
 
@@ -102,6 +102,13 @@ body {
   z-index: -10;
   backdrop-filter: url("#liquid-glass-filter") blur(16px);
   -webkit-backdrop-filter: blur(16px);
+}
+
+/* Scrolled State for High Contrast Over White Backgrounds */
+.navbar.scrolled {
+  background: rgba(15, 23, 42, 0.65) !important; /* Transparência cinza/escura */
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.10);
 }
 
 /* Morphic Navbar Island */
@@ -177,18 +184,20 @@ body {
   color: rgba(255, 255, 255, 0.65);
   text-decoration: none;
   background-color: transparent;
-  transition: color 0.3s var(--ease-ramp);
+  transition: color 0.3s var(--ease-ramp), text-shadow 0.3s var(--ease-ramp);
   text-align: center;
   white-space: nowrap;
 }
 
 .morphic-link:hover {
   color: var(--text-white);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
 .morphic-link.active {
   color: var(--text-white) !important;
   font-weight: 600;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }
 
 @media (max-width: 1024px) {
@@ -217,7 +226,16 @@ body {
 .logo-text {
   font-size: 1.6rem;
   font-weight: 800;
-  color: var(--text-white);
+  background: linear-gradient(
+    135deg,
+    #ffffff 0%,
+    #e9ecef 40%,
+    #ced4da 60%,
+    #ffffff 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
   letter-spacing: -0.5px;
 }
 
