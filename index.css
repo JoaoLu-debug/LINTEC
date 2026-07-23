@@ -517,30 +517,55 @@ body {
 .section-title {
   font-family: var(--font-body);
   font-size: 2.2rem;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: -0.8px;
-  color: var(--text-dark);
+  background: linear-gradient(
+    135deg,
+    #001f66 0%,
+    #0052ff 35%,
+    #00c8ff 60%,
+    #0052ff 85%,
+    #001f66 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: refractiveShine 6s linear infinite;
   margin-bottom: 16px;
 }
 
 .section-desc {
   font-size: 1.05rem;
-  color: var(--text-dark-secondary);
+  color: #2b3a4a;
   line-height: 1.6;
+  font-weight: 500;
 }
 
 /* Grid de Diferenciais */
 .expectations-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
+  gap: 30px;
 }
 
 .expectation-col {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  transition: transform var(--transition-fast);
+  background: rgba(0, 82, 255, 0.015);
+  border: 1px solid rgba(0, 82, 255, 0.06);
+  border-radius: 24px;
+  padding: 36px 30px;
+  box-shadow: 0 4px 20px rgba(0, 82, 255, 0.01);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+}
+
+.expectation-col:hover {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(0, 82, 255, 0.2);
+  box-shadow: 0 15px 35px rgba(0, 82, 255, 0.08);
 }
 
 /* Ícones Geométricos Grandes em Azul */
@@ -551,6 +576,11 @@ body {
   line-height: 1;
   margin-bottom: 24px;
   user-select: none;
+  transition: transform var(--transition-fast);
+}
+
+.expectation-col:hover .geometric-icon {
+  transform: scale(1.1) rotate(5deg);
 }
 
 .icon-arrow {
@@ -559,16 +589,42 @@ body {
 
 .expectation-title {
   font-family: var(--font-body);
-  font-size: 1.15rem;
-  font-weight: 600;
-  color: var(--text-dark);
+  font-size: 1.25rem;
+  font-weight: 700;
+  background: linear-gradient(
+    135deg,
+    #001f66 0%,
+    #0052ff 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   margin-bottom: 12px;
+  transition: all var(--transition-fast);
+}
+
+.expectation-col:hover .expectation-title {
+  background: linear-gradient(
+    135deg,
+    #0052ff 0%,
+    #00d4ff 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .expectation-text {
   font-size: 0.94rem;
-  color: var(--text-dark-secondary);
+  color: #495057;
   line-height: 1.6;
+}
+
+@keyframes refractiveShine {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
 }
 
 /* ==========================================================================
