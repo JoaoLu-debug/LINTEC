@@ -95,20 +95,61 @@ document.addEventListener('DOMContentLoaded', () => {
      ========================================================================== */
   const tiltColumns = document.querySelectorAll('[data-tilt]');
 
+  const centerOfElement = (rect) => {
+    return [rect.width / 2, rect.height / 2];
+  };
+
+  const getPointerPosition = (rect, e) => {
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const px = Math.min(Math.max((100 / rect.width) * x, 0), 100);
+    const py = Math.min(Math.max((100 / rect.height) * y, 0), 100);
+    return { pixels: [x, y], percent: [px, py] };
+  };
+
+  const angleFromPointer = (dx, dy) => {
+    if (dx === 0 && dy === 0) return 0;
+    let angleRadians = Math.atan2(dy, dx);
+    let angleDegrees = angleRadians * (180 / Math.PI) + 90;
+    if (angleDegrees < 0) {
+      angleDegrees += 360;
+    }
+    return angleDegrees;
+  };
+
+  const closenessToEdge = (rect, x, y) => {
+    const cx = rect.width / 2;
+    const cy = rect.height / 2;
+    const dx = x - cx;
+    const dy = y - cy;
+    let k_x = cx / Math.abs(dx || 0.0001);
+    let k_y = cy / Math.abs(dy || 0.0001);
+    return Math.min(Math.max((1 / Math.min(k_x, k_y)) * 100, 0), 100);
+  };
+
   tiltColumns.forEach(card => {
     card.addEventListener('mousemove', (e) => {
       const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left; // Mouse X inside column
-      const y = e.clientY - rect.top;  // Mouse Y inside column
+      const pos = getPointerPosition(rect, e);
+      const [px, py] = pos.pixels;
+      const [perx, pery] = pos.percent;
       
-      const width = rect.width;
-      const height = rect.height;
-      const mouseX = x / width; // 0 to 1
-      const mouseY = y / height; // 0 to 1
+      const [cx, cy] = centerOfElement(rect);
+      const dx = px - cx;
+      const dy = py - cy;
+      
+      const edge = closenessToEdge(rect, px, py);
+      const angle = angleFromPointer(dx, dy);
 
-      // Rotation angles (Max 8 degrees for clean subtle feel matching white blocks)
-      const rotateX = (0.5 - mouseY) * 8;
-      const rotateY = (mouseX - 0.5) * 8;
+      // Set CSS Variables for the border mesh glow
+      card.style.setProperty('--pointer-x', `${perx.toFixed(2)}%`);
+      card.style.setProperty('--pointer-y', `${pery.toFixed(2)}%`);
+      card.style.setProperty('--pointer-deg', `${angle.toFixed(2)}deg`);
+      card.style.setProperty('--pointer-d', `${edge.toFixed(2)}`);
+
+      // 3D Tilt calculation
+      const rotateX = (0.5 - (py / rect.height)) * 8;
+      const rotateY = ((px / rect.width) - 0.5) * 8;
 
       card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.01)`;
       card.style.transition = 'transform 0.1s ease-out';
@@ -118,6 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
     card.addEventListener('mouseleave', () => {
       card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
       card.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+      card.style.setProperty('--pointer-d', '0');
     });
   });
 
