@@ -767,7 +767,7 @@ body {
 }
 
 .chatbot-container {
-  position: absolute;
+  position: absolute !important;
   bottom: 70px;
   right: 0;
   width: 360px;
@@ -879,9 +879,8 @@ body {
 .chatbot-quick-replies {
   padding: 10px 20px;
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
-  overflow-x: auto;
-  white-space: nowrap;
   background-color: var(--bg-white);
   border-top: 1px solid #f1f3f5;
 }
