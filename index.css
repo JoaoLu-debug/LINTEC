@@ -78,16 +78,83 @@ body {
 
 .navbar {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  max-width: 1200px;
   height: 64px;
   z-index: 100;
-  background: rgba(0, 19, 102, 0.9);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  transition: background-color var(--transition-fast);
+  background: rgba(0, 19, 102, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  transition: all var(--transition-fast);
+}
+
+/* Morphic Navbar Island */
+.morphic-island-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+.morphic-island {
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 4px;
+  overflow: hidden;
+}
+
+.morphic-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  background-color: transparent;
+  transition: all 0.3s var(--ease-ramp);
+  border-radius: 0;
+}
+
+.morphic-link:hover {
+  color: var(--text-white);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.morphic-link.active {
+  background-color: var(--blue-bright) !important;
+  color: var(--text-white) !important;
+  font-weight: 600;
+  margin: 0 4px;
+}
+
+.morphic-link.round-all {
+  border-radius: 12px !important;
+}
+
+.morphic-link.round-left {
+  border-radius: 12px 0 0 12px !important;
+}
+
+.morphic-link.round-right {
+  border-radius: 0 12px 12px 0 !important;
+}
+
+@media (max-width: 1024px) {
+  .morphic-island-wrapper {
+    display: none;
+  }
 }
 
 .navbar-container {
@@ -121,15 +188,6 @@ body {
   background-color: var(--neon-green);
   margin-left: 3px;
   margin-top: 6px;
-}
-
-.navbar-center-text {
-  font-family: var(--font-body);
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.7);
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
 }
 
 .btn-neon {

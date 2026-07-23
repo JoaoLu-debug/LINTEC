@@ -26,6 +26,76 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   /* ==========================================================================
+     1.5. MORPHIC NAVBAR LOGIC & SCROLL SPY
+     ========================================================================== */
+  const morphicLinks = document.querySelectorAll('.morphic-link');
+  const sections = document.querySelectorAll('section[id]');
+
+  function updateMorphicNavbar(activeHref) {
+    morphicLinks.forEach((link, index) => {
+      const isLinkActive = link.getAttribute('href') === activeHref;
+      
+      // Remove all shapes
+      link.classList.remove('active', 'round-all', 'round-left', 'round-right');
+      
+      if (isLinkActive) {
+        link.classList.add('active', 'round-all');
+      } else {
+        const prevLink = index > 0 ? morphicLinks[index - 1] : null;
+        const nextLink = index < morphicLinks.length - 1 ? morphicLinks[index + 1] : null;
+        
+        const isPrevActive = prevLink && prevLink.getAttribute('href') === activeHref;
+        const isNextActive = nextLink && nextLink.getAttribute('href') === activeHref;
+        
+        const isFirst = index === 0;
+        const isLast = index === morphicLinks.length - 1;
+        
+        const shouldRoundLeft = isFirst || isPrevActive;
+        const shouldRoundRight = isLast || isNextActive;
+        
+        if (shouldRoundLeft && shouldRoundRight) {
+          link.classList.add('round-all');
+        } else if (shouldRoundLeft) {
+          link.classList.add('round-left');
+        } else if (shouldRoundRight) {
+          link.classList.add('round-right');
+        }
+      }
+    });
+  }
+
+  // Click handler to update active state immediately
+  morphicLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+      updateMorphicNavbar(href);
+    });
+  });
+
+  // Scroll spy to update active state based on position
+  function scrollSpy() {
+    const scrollPosition = window.scrollY + 120; // offset for the navbar
+    
+    let currentSectionId = '#inicio';
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop;
+      const sectionHeight = section.offsetHeight;
+      const sectionId = section.getAttribute('id');
+      
+      if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+        currentSectionId = '#' + sectionId;
+      }
+    });
+    
+    updateMorphicNavbar(currentSectionId);
+  }
+
+  window.addEventListener('scroll', scrollSpy);
+  // Initial call to set active link on load
+  scrollSpy();
+
+
+  /* ==========================================================================
      2. 3D TILT EFFECT FOR COLUMNS (Premium Refractive Web Design Skill)
      ========================================================================== */
   const tiltColumns = document.querySelectorAll('[data-tilt]');
