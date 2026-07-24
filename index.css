@@ -765,6 +765,13 @@ body {
   transition: transform var(--transition-fast);
 }
 
+svg.geometric-icon {
+  width: 3.2rem;
+  height: 3.2rem;
+  display: inline-block;
+  vertical-align: middle;
+}
+
 .expectation-col:hover .geometric-icon {
   transform: scale(1.1) rotate(5deg);
 }
