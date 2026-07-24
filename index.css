@@ -768,10 +768,9 @@ body {
 svg.geometric-icon {
   width: 2.2rem;
   height: 2.2rem;
-  display: inline-block;
-  vertical-align: middle;
+  display: block;
   margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: calc(24px + 0.5rem);
 }
 
 .expectation-col:hover .geometric-icon {
