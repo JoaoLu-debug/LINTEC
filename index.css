@@ -773,6 +773,10 @@ body {
   font-weight: 400;
 }
 
+.expectation-col:hover .icon-gear {
+  transform: scale(1.15) rotate(90deg);
+}
+
 .expectation-title {
   font-family: var(--font-body);
   font-size: 1.25rem;
