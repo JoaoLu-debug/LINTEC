@@ -232,18 +232,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const ctx = canvas.getContext('2d');
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-    // Configurações do CursorGrid de Pontinhos
-    const cellSize = 35; // Espaçamento entre os pontinhos em pixels
+    // Configurações do CursorGrid de Pontinhos (Tornado mais denso e dinâmico)
+    const cellSize = 22; // Espaçamento entre os pontinhos (Reduzido de 35 para mais pontos/densidade)
     const pointColor = '#ffffff'; // Cor branca para os pontinhos
-    const pointRadius = 1.4; // Raio de cada pontinho em pixels (Aumentado de 1.2)
-    const interactionRadius = 165; // Raio sob o mouse em pixels
-    const maxDisplacement = 13; // Deslocamento físico máximo (repulsão) em pixels
-    const gridOpacity = 0.22; // Opacidade estática padrão dos pontinhos (Aumentado de 0.12)
-    const maxOpacity = 0.95; // Opacidade máxima dos pontinhos brilhando (Aumentado de 0.75)
-    const holdTime = 350; // Tempo em ms que o ponto fica brilhando
-    const fadeDuration = 700; // Tempo em ms para o brilho desaparecer
+    const pointRadius = 1.2; // Raio de cada pontinho em pixels
+    const interactionRadius = 190; // Raio de interação do mouse em pixels (Aumentado de 165)
+    const maxDisplacement = 22; // Deslocamento de repulsão do mouse (Aumentado de 13 para onda mais intensa)
+    const gridOpacity = 0.16; // Opacidade padrão dos pontinhos
+    const maxOpacity = 0.98; // Opacidade máxima no pico da onda
+    const holdTime = 250; // Tempo em ms que o brilho permanece estável
+    const fadeDuration = 600; // Tempo em ms para esmaecer o brilho
     const clickPulse = true;
-    const pulseSpeed = 650; // Velocidade da onda de clique em pixels/segundo
+    const pulseSpeed = 750; // Velocidade da expansão da onda de clique (Aumentado de 650)
 
     let cols = 0;
     let rows = 0;
@@ -305,27 +305,43 @@ document.addEventListener('DOMContentLoaded', () => {
       const h = heroSection.offsetHeight;
       ctx.clearRect(0, 0, w, h);
 
-      // Processar pulsos de clique
+      // Calcular deslocamento físico e brilho gerados pelas ondas de clique (Ripple Effect)
+      const waveDisplacements = new Array(points.length);
+      for (let i = 0; i < points.length; i++) {
+        waveDisplacements[i] = { dx: 0, dy: 0, alpha: 0 };
+      }
+
       for (let pi = pulses.length - 1; pi >= 0; pi--) {
         const pulse = pulses[pi];
         const age = (now - pulse.t0) / 1000;
         const ringR = age * pulseSpeed;
         
-        if (ringR > Math.hypot(w, h)) {
+        // Finaliza o pulso após cruzar a tela com folga
+        if (ringR > Math.hypot(w, h) + 200) {
           pulses.splice(pi, 1);
           continue;
         }
 
-        const band = cellSize * 1.5;
-        points.forEach(pt => {
+        const band = cellSize * 4; // Banda de onda mais larga para espalhamento suave
+        points.forEach((pt, idx) => {
           const dist = Math.hypot(pt.ox - pulse.x, pt.oy - pulse.y);
           const diff = Math.abs(dist - ringR);
+          
           if (diff < band) {
             const waveStrength = 1 - (diff / band);
-            const level = waveStrength * waveStrength * maxOpacity;
-            if (level > pt.alpha) {
-              pt.alpha = level;
-              pt.touched = now;
+            const smoothStrength = waveStrength * waveStrength * (3 - 2 * waveStrength);
+            
+            // Força física de empuxo da onda (Ripple Wave Shockwave)
+            const angle = Math.atan2(pt.oy - pulse.y, pt.ox - pulse.x);
+            const pushDist = smoothStrength * 28; // Empurra os pontos até 28px no pico da onda!
+            
+            waveDisplacements[idx].dx += Math.cos(angle) * pushDist;
+            waveDisplacements[idx].dy += Math.sin(angle) * pushDist;
+            
+            // Intensidade do brilho da onda
+            const level = smoothStrength * maxOpacity;
+            if (level > waveDisplacements[idx].alpha) {
+              waveDisplacements[idx].alpha = level;
             }
           }
         });
@@ -334,11 +350,12 @@ document.addEventListener('DOMContentLoaded', () => {
       // Calcular física e desenhar pontos
       const fadeStep = dt / Math.max(fadeDuration, 16);
 
-      points.forEach(pt => {
+      points.forEach((pt, idx) => {
         let targetX = pt.ox;
         let targetY = pt.oy;
         let targetAlpha = gridOpacity;
 
+        // 1. Repulsão Magnética e Brilho do Mouse (Hover)
         if (mouseIn) {
           const dist = Math.hypot(pt.ox - mouseX, pt.oy - mouseY);
           
@@ -346,7 +363,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const force = 1 - (dist / interactionRadius);
             const smoothForce = force * force * (3 - 2 * force);
             
-            // Repulsão Magnética
             const dx = pt.ox - mouseX;
             const dy = pt.oy - mouseY;
             const angle = Math.atan2(dy, dx);
@@ -355,20 +371,30 @@ document.addEventListener('DOMContentLoaded', () => {
             targetX = pt.ox + Math.cos(angle) * disp;
             targetY = pt.oy + Math.sin(angle) * disp;
 
-            // Brilho
             targetAlpha = gridOpacity + (maxOpacity - gridOpacity) * smoothForce;
             pt.touched = now;
           }
         }
 
+        // 2. Aplicar efeitos de onda de clique
+        const wave = waveDisplacements[idx];
+        targetX += wave.dx;
+        targetY += wave.dy;
+        if (wave.alpha > targetAlpha) {
+          targetAlpha = wave.alpha;
+          pt.touched = now;
+        }
+
+        // Interpolação de brilho
         if (now - pt.touched > holdTime) {
           pt.alpha = Math.max(gridOpacity, pt.alpha - fadeStep);
         } else {
-          pt.alpha += (targetAlpha - pt.alpha) * 0.15;
+          pt.alpha += (targetAlpha - pt.alpha) * 0.18;
         }
 
-        pt.cx += (targetX - pt.cx) * 0.12;
-        pt.cy += (targetY - pt.cy) * 0.12;
+        // Interpolação de posição física (0.075 para efeito fluido de elasticidade de fluidos)
+        pt.cx += (targetX - pt.cx) * 0.075;
+        pt.cy += (targetY - pt.cy) * 0.075;
 
         ctx.beginPath();
         ctx.arc(pt.cx, pt.cy, pointRadius, 0, Math.PI * 2);
