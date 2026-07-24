@@ -294,11 +294,11 @@ body {
   align-items: center;
   text-decoration: none;
   font-family: var(--font-title);
-  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: transform 0.4s var(--ease-ramp);
 }
 
 .logo-area:hover {
-  transform: rotate(360deg) scale(1.05);
+  transform: scale(1.03);
 }
 
 .logo-text {
@@ -323,7 +323,8 @@ body {
   border-radius: 50%;
   background-color: var(--neon-green);
   margin-left: 3px;
-  margin-top: 6px;
+  margin-top: 6.5px;
+  transition: transform 0.4s var(--ease-ramp), box-shadow 0.4s var(--ease-ramp);
 }
 
 .btn-neon {
@@ -926,8 +927,10 @@ svg.geometric-icon {
 }
 
 .gallery-item {
-  background: var(--bg-white);
-  border: 1px solid #e9ecef;
+  background: rgba(255, 255, 255, 0.6) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 82, 255, 0.05);
   border-radius: 16px;
   padding: 24px 16px;
   display: flex;
@@ -936,14 +939,15 @@ svg.geometric-icon {
   justify-content: center;
   gap: 12px;
   height: 200px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
-  transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
 }
 
 .gallery-item:hover {
   transform: translateY(-4px);
-  border-color: rgba(0, 82, 255, 0.2);
-  box-shadow: 0 10px 25px rgba(0, 82, 255, 0.08);
+  border-color: rgba(0, 82, 255, 0.25);
+  background-color: rgba(255, 255, 255, 0.85) !important;
+  box-shadow: 0 12px 30px rgba(0, 82, 255, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .autoclave-img {
