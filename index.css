@@ -943,38 +943,28 @@ body {
   letter-spacing: -0.3px;
 }
 
-.authorized-logos-grid {
+.authorized-banner-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 40px 60px;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-.logo-item {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 60px;
-  transition: transform var(--transition-fast);
-}
-
-.logo-item:hover {
-  transform: scale(1.05);
-}
-
-.brand-logo-img {
-  max-height: 48px;
-  max-width: 150px;
+.authorized-banner-img {
+  width: 100%;
+  height: auto;
+  max-width: 800px;
   object-fit: contain;
-  filter: grayscale(1) contrast(0.85);
-  opacity: 0.65;
-  transition: filter var(--transition-fast), opacity var(--transition-fast);
+  mix-blend-mode: multiply;
+  opacity: 0.95;
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
 }
 
-.logo-item:hover .brand-logo-img {
-  filter: grayscale(0) contrast(1);
+.authorized-banner-img:hover {
   opacity: 1;
+  transform: scale(1.02);
 }
 
 /* ==========================================================================
